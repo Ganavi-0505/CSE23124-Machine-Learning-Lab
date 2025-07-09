@@ -60,3 +60,21 @@ transposed = transpose_matrix(matrix_input)
 print("Transpose of the matrix:", transposed)
 
 #Question 5: Generate a list of 100 random numbers between 100 and 150. Find the mean median and mode for these numbers 
+import random
+from statistics import mean, median, mode
+
+def generate_random_statistics() -> tuple:
+# Generates 100 random integers between 100 and 150 
+    random_numbers = [random.randint(100, 150) for _ in range(100)]
+    # calculate mean
+    avg = mean(random_numbers)
+    # calculate median
+    med = median(random_numbers)
+    # calculate mode
+    mod = mode(random_numbers)
+    return random_numbers, avg, med, mod
+
+# main function 
+numbers, avg, med, mod = generate_random_statistics()
+print("Random numbers:", numbers)
+print(f"Mean: {avg}, Median: {med}, Mode: {mod}")
