@@ -9,6 +9,7 @@ def count_vc(s:str)->tuple:
         else:
             cc+=1
     return cv,cc
+# main function
 s=str(input("Entar a string "))
 v,c=count_vc(s)
 print(f"Vowels: {v} and Consonants: {c}")
@@ -28,6 +29,7 @@ def matrixmul(a:list, b:list) -> list or str:
             r.append(p)
         result.append(r)
     return result
+# main function
 a=list(input("Enter first matrix "))
 b=list(input("Enter second matrix "))
 p=matrixmul(a,b)
@@ -39,9 +41,22 @@ def countc(a:list,b:list)->int:
     s2=set(b)
     r=s1.intersection(s2)
     return len(r)
+# main function
 a=list(input("Enter first matrix "))
 b=list(input("Enter second matrix "))
 r=countc(a,b)
 print("Result: ",r)
 
+# Question 4: write a program that accepts a matrix as input and returns its transpose
+def transpose_matrix(matrix: list) -> list:
+    """Returns the transpose of a matrix."""
+    rows = len(matrix)
+    cols = len(matrix[0])
+    transposed = [[matrix[j][i] for j in range(rows)] for i in range(cols)]
+    return transposed
+# main function
+matrix_input = list(input("Enter a matrix"))
+transposed = transpose_matrix(matrix_input)
+print("Transpose of the matrix:", transposed)
 
+#Question 5: Generate a list of 100 random numbers between 100 and 150. Find the mean median and mode for these numbers 
