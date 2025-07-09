@@ -15,24 +15,33 @@ print(f"Vowels: {v} and Consonants: {c}")
 
 # Question 2: Write a program that accepts 2 matrices A and B as input and returns their product AB. 
 # Check if A & B are multipliable if not return error message.
-def multiply_matrices(matrix_a: list, matrix_b: list) -> list or str:
-    #Returns the product of two matrices if dimensions are compatible.
-    if len(matrix_a[0]) != len(matrix_b):
-        return "Error: Matrices cannot be multiplied due to dimension mismatch."
-
+def matrixmul(a:list, b:list) -> list or str:
+    if len(a[0]) != len(b):
+        return "Error: Multiplication of these matrices is not possible"
+    
     result = []
-    for row in matrix_a:
-        result_row = []
-        for j in range(len(matrix_b[0])):
-            element = sum(row[k] * matrix_b[k][j] for k in range(len(matrix_b)))
-            result_row.append(element)
-        result.append(result_row)
+    for i in a:
+        r=[]
+        for j in range(len(b[0])):
+            for k in range(len(b)):
+                p=sum(i[k]*b[k][j])
+            r.append(p)
+        result.append(r)
     return result
+a=list(input("Enter first matrix "))
+b=list(input("Enter second matrix "))
+p=matrixmul(a,b)
+print("Result",p)
 
-# Main function
-A = [[1, 2], [3, 4]]
-B = [[5, 6], [7, 8]]
-product = multiply_matrices(A, B)
-print("Product of matrices:" if isinstance(product, list) else "Error:", product)
+# Question 3: program to find number of common elements between 2 lists of integers
+def countc(a:list,b:list)->int:
+    s1=set(a)
+    s2=set(b)
+    r=s1.intersection(s2)
+    return len(r)
+a=list(input("Enter first matrix "))
+b=list(input("Enter second matrix "))
+r=countc(a,b)
+print("Result: ",r)
 
 
