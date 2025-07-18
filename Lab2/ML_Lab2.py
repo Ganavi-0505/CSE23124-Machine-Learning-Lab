@@ -134,7 +134,7 @@ plt.savefig("chg_percent_vs_day.png")
 print("\n✅ Plot saved as 'chg_percent_vs_day.png'")
 
 # A4
-print("\n\n")
+print("\n\n A4")
 
 # Loading data
 thyroid_data = pd.read_excel("Lab Session Data.xlsx", sheet_name="thyroid0387_UCI")
@@ -185,3 +185,64 @@ for col in numeric_cols:
     print(f"{col}: Mean = {mean:.2f}, Variance = {var:.2f}, Std Dev = {std:.2f}")
 
 
+# A5
+print("\n\n A5")
+
+# Selecting only binary columns only
+binary_cols = []
+
+for col in thyroid_data.columns:
+    unique_vals = thyroid_data[col].dropna().unique()
+    if len(unique_vals) == 2:
+        values = set(str(v).strip().lower() for v in unique_vals)
+        if values <= {'0', '1'} or values <= {'t', 'f'} or values <= {'yes', 'no'}:
+            binary_cols.append(col)
+
+# Normalize binary values
+binary_data = thyroid_data[binary_cols].replace({
+    't': 1, 'f': 0, 'T': 1, 'F': 0,
+    'yes': 1, 'no': 0, 'True': 1, 'False': 0,
+    'y': 1, 'n': 0
+})
+binary_data = binary_data.apply(pd.to_numeric, errors='coerce')
+
+# first two observations
+v1 = binary_data.iloc[0]
+v2 = binary_data.iloc[1]
+
+# matching values
+f11 = ((v1 == 1) & (v2 == 1)).sum()
+f00 = ((v1 == 0) & (v2 == 0)).sum()
+f10 = ((v1 == 1) & (v2 == 0)).sum()
+f01 = ((v1 == 0) & (v2 == 1)).sum()
+
+# JC
+jc = f11 / (f11 + f10 + f01) if (f11 + f10 + f01) > 0 else 0
+
+# SMC
+smc = (f11 + f00) / (f11 + f10 + f01 + f00) if (f11 + f10 + f01 + f00) > 0 else 0
+
+print(f"\n Selected Binary Columns: {binary_cols}")
+print(f"\n f11 = {f11}, f10 = {f10}, f01 = {f01}, f00 = {f00}")
+print(f"\nJaccard Coefficient (JC): {jc:.3f}")
+print(f"\n Simple Matching Coefficient (SMC): {smc:.3f}")
+
+# A6
+print("\n\n A6")
+
+#import
+from numpy.linalg import norm
+
+# Selecting only numeric columns
+numeric_cols = thyroid_data.select_dtypes(include='number').columns.tolist()
+
+# Extract two vectors: rows 0 and 1
+vec1 = thyroid_data.loc[0, numeric_cols].fillna(0).values
+vec2 = thyroid_data.loc[1, numeric_cols].fillna(0).values
+
+# Compute cosine similarity
+cos_sim = np.dot(vec1, vec2) / (norm(vec1) * norm(vec2)) if norm(vec1) != 0 and norm(vec2) != 0 else 0
+
+# Output
+print(f"\nNumeric Columns Used: {numeric_cols}")
+print(f"\nCosine Similarity between Row 0 and Row 1: {cos_sim:.3f}")
