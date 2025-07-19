@@ -233,16 +233,153 @@ print("\n\n A6")
 #import
 from numpy.linalg import norm
 
-# Selecting only numeric columns
+# Using only numeric columns
 numeric_cols = thyroid_data.select_dtypes(include='number').columns.tolist()
 
-# Extract two vectors: rows 0 and 1
+# Extracting observation 1 and 2
 vec1 = thyroid_data.loc[0, numeric_cols].fillna(0).values
 vec2 = thyroid_data.loc[1, numeric_cols].fillna(0).values
 
 # Compute cosine similarity
 cos_sim = np.dot(vec1, vec2) / (norm(vec1) * norm(vec2)) if norm(vec1) != 0 and norm(vec2) != 0 else 0
 
-# Output
 print(f"\nNumeric Columns Used: {numeric_cols}")
-print(f"\nCosine Similarity between Row 0 and Row 1: {cos_sim:.3f}")
+print(f"\nCosine Similarity between observation 1 and 2: {cos_sim:.3f}")
+
+# A7
+print("\n\n A7")
+
+#import
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.metrics.pairwise import cosine_similarity
+
+# first 20 rows
+first_20 = thyroid_data.head(20).copy()
+
+#  Finding binary columns 
+binary_cols = []
+for col in first_20.columns:
+    unique_vals = first_20[col].dropna().unique()
+    if len(unique_vals) == 2:
+        values = set(str(v).strip().lower() for v in unique_vals)
+        if values <= {'0', '1'} or values <= {'t', 'f'} or values <= {'yes', 'no'}:
+            binary_cols.append(col)
+
+# Encoding binary values (yes/no) to 0/1
+binary_data = first_20[binary_cols].replace({
+    't': 1, 'f': 0, 'T': 1, 'F': 0,
+    'yes': 1, 'no': 0, 'True': 1, 'False': 0,
+    'y': 1, 'n': 0
+}).apply(pd.to_numeric, errors='coerce').fillna(0).astype(int)
+
+# JC and SMC matrices
+jc_matrix = np.zeros((20, 20))
+smc_matrix = np.zeros((20, 20))
+
+for i in range(20):
+    for j in range(20):
+        v1 = binary_data.iloc[i]
+        v2 = binary_data.iloc[j]
+        f11 = ((v1 == 1) & (v2 == 1)).sum()
+        f00 = ((v1 == 0) & (v2 == 0)).sum()
+        f10 = ((v1 == 1) & (v2 == 0)).sum()
+        f01 = ((v1 == 0) & (v2 == 1)).sum()
+        denom_jc = f11 + f10 + f01
+        denom_smc = f11 + f10 + f01 + f00
+        jc_matrix[i][j] = f11 / denom_jc if denom_jc > 0 else 0
+        smc_matrix[i][j] = (f11 + f00) / denom_smc if denom_smc > 0 else 0
+
+# Cosine similarity 
+cosine_data = first_20.copy()
+
+# Encoding categorical columns
+cosine_data = cosine_data.replace({
+    't': 1, 'f': 0, 'T': 1, 'F': 0,
+    'yes': 1, 'no': 0, 'True': 1, 'False': 0,
+    'y': 1, 'n': 0
+})
+cat_cols = cosine_data.select_dtypes(include='object').columns
+for col in cat_cols:
+    cosine_data[col] = LabelEncoder().fit_transform(cosine_data[col].astype(str))
+cosine_data = cosine_data.apply(pd.to_numeric, errors='coerce').fillna(0)
+
+# cosine similarity
+cos_matrix = cosine_similarity(cosine_data)
+
+# heatmap plot
+plt.figure(figsize=(18, 5))
+
+plt.subplot(1, 3, 1)
+sns.heatmap(jc_matrix, annot=False, cmap='Blues')
+plt.title("Jaccard Coefficient (JC)")
+
+plt.subplot(1, 3, 2)
+sns.heatmap(smc_matrix, annot=False, cmap='Greens')
+plt.title("Simple Matching Coefficient (SMC)")
+
+plt.subplot(1, 3, 3)
+sns.heatmap(cos_matrix, annot=False, cmap='Oranges')
+plt.title("Cosine Similarity")
+
+plt.tight_layout()
+plt.savefig("A7.png")
+plt.show()
+
+# A8
+print("\n\n A8")
+
+thyroid_imputed = thyroid_data.copy()
+
+# numeric and categorical columns
+num_cols = thyroid_imputed.select_dtypes(include='number').columns
+cat_cols = thyroid_imputed.select_dtypes(include='object').columns
+
+# finding outliers using IQR
+outlier_cols = []
+for col in num_cols:
+    q1 = thyroid_imputed[col].quantile(0.25)
+    q3 = thyroid_imputed[col].quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+    outliers = thyroid_imputed[(thyroid_imputed[col] < lower_bound) | (thyroid_imputed[col] > upper_bound)]
+    if not outliers.empty:
+        outlier_cols.append(col)
+
+# imputation of numeric data
+for col in num_cols:
+    if thyroid_imputed[col].isnull().sum() > 0:
+        if col in outlier_cols:
+            thyroid_imputed[col].fillna(thyroid_imputed[col].median(), inplace=True)
+            print(f"{col}: Filled missing with Median (has outliers)")
+        else:
+            thyroid_imputed[col].fillna(thyroid_imputed[col].mean(), inplace=True)
+            print(f"{col}: Filled missing with Mean (no outliers)")
+    else:
+        print(f"{col}: No missing values in numeric data ")
+
+# imputation categorical data
+for col in cat_cols:
+    if thyroid_imputed[col].isnull().sum() > 0:
+        thyroid_imputed[col].fillna(thyroid_imputed[col].mode()[0], inplace=True)
+        print(f"{col}: Filled missing with Mode (categorical)")
+    else:
+        print(f"{col}:No missing values in categorical data , no imputation required")
+
+# A9
+print("\n\n A9")
+
+# import
+from sklearn.preprocessing import MinMaxScaler
+
+# normalization of numerical columns
+scaler = MinMaxScaler()
+thyroid_normalized = thyroid_imputed.copy()
+
+# normalization of numeric features 
+thyroid_normalized[num_cols] = scaler.fit_transform(thyroid_normalized[num_cols])
+
+print("\nNumeric columns normalized using Min-Max Scaling.")
+print("\nSample of normalized data:")
+print(thyroid_normalized[num_cols].head())
