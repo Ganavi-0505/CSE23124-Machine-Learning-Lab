@@ -1,0 +1,4 @@
+capacity_bytes,failure,vault_id,pod_id,is_legacy_format,smart_1_normalized,smart_1_raw,smart_5_normalized,smart_5_raw,smart_9_normalized,smart_9_raw,smart_12_normalized,smart_12_raw,smart_194_normalized,smart_194_raw,smart_196_normalized,smart_196_raw,smart_197_normalized,smart_197_raw,smart_198_normalized,smart_198_raw,smart_199_normalized,smart_199_raw
+8001563222016.0,0.0,1028.0,4.0,0.0,100.0,0.0,100.0,0.0,96.0,32538.0,100.0,61.0,253.0,23.0,100.0,0.0,100.0,0.0,100.0,0.0,200.0,0.0
+250059350016.0,0.0,1028.0,13.0,0.0,100.0,0.0,100.0,0.0,100.0,16790.0,100.0,3.0,63.0,37.0,100.0,0.0,100.0,0.0,100.0,0.0,100.0,0.0
+8001563222016.0,0.0,1028.0,12.0,0.0,100.0,0.0,100.0,0.0,90.0,71139.0,100.0,18.0,200.0,30.0,100.0,0.0,100.0,0.0,100.0,0.0,200.0,0.0
