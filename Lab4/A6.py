@@ -20,7 +20,7 @@ xx, yy = np.meshgrid(np.arange(x_min, x_max, 10),
                      np.arange(y_min, y_max, 10))
 test_points = np.c_[xx.ravel(), yy.ravel()]
 
-knn = KNeighborsClassifier(n_neighbors=3)
+knn = KNeighborsClassifier(n_neighbors=5)
 knn.fit(X_train, y_train)
 test_pred = knn.predict(test_points)
 
@@ -29,6 +29,6 @@ plt.scatter(test_points[:, 0], test_points[:, 1], c=test_pred, cmap='coolwarm', 
 plt.scatter(X_train.iloc[:, 0], X_train.iloc[:, 1], c=y_train, cmap='coolwarm', edgecolor='k')
 plt.xlabel("smart_1_raw")
 plt.ylabel("smart_5_raw")
-plt.title("A6: Dataset2 SMART Attribute Classification with k=3")
+plt.title("A6: Dataset2 SMART Attribute Classification with k=5")
 plt.show()
-plt.savefig("A6.png")
+plt.savefig("A6_1.png")
