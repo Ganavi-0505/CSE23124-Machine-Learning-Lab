@@ -1,28 +1,29 @@
 import pandas as pd
 import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_percentage_error
 
-# Load the file
 df = pd.read_excel("lab_5_dataset.xlsx")
+target_col = 'failure' if 'failure' in df.columns else df.columns[-1]
+X = df.drop(columns=[target_col])
+y = df[target_col]
 
-# Step 1: Replace empty strings with NaN
-df.replace(r'^\s*$', np.nan, regex=True, inplace=True)
+X_train, X_test, y_train, y_test = train_test_split(X.iloc[:, [0]], y, test_size=0.2, random_state=42)
 
-# Step 2: Drop completely empty columns
-df.dropna(axis=1, how='all', inplace=True)
+model = LinearRegression()
+model.fit(X_train, y_train)
 
-# Step 3: Remove non-numeric identifier columns
-id_cols = ['date', 'serial_number', 'model', 'datacenter', 
-           'cluster_id', 'vault_id', 'pod_id', 'pod_slot_num', 'is_legacy_format']
-df.drop(columns=[c for c in id_cols if c in df.columns], inplace=True, errors='ignore')
+y_train_pred = model.predict(X_train)
+y_test_pred = model.predict(X_test)
 
-# Step 4: Convert all remaining columns to numeric
-df = df.apply(pd.to_numeric, errors='coerce')
+def print_metrics(name, y_true, y_pred):
+    mse = mean_squared_error(y_true, y_pred)
+    rmse = np.sqrt(mse)
+    mape = mean_absolute_percentage_error(y_true, y_pred)
+    r2 = r2_score(y_true, y_pred)
+    print(f"\n{name}")
+    print(f"MSE: {mse:.4f} | RMSE: {rmse:.4f} | MAPE: {mape:.4f} | R2: {r2:.4f}")
 
-# Step 5: Drop rows with NaN values (you can also use fillna)
-df.dropna(axis=0, how='any', inplace=True)
-
-# Step 6: Remove duplicates
-df.drop_duplicates(inplace=True)
-
-print("Cleaned shape:", df.shape)
-print(df.head())
+print_metrics("Train", y_train, y_train_pred)
+print_metrics("Test", y_test, y_test_pred)
