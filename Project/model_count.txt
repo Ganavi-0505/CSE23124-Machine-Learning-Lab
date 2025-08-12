@@ -1,0 +1,58 @@
+                                 model  count
+                         ST12000NM0008    809
+                   TOSHIBA MG07ACA14TA    674
+                           ST4000DM000    648
+                          ST8000NM0055    640
+                  HGST HUH721212ALN604    401
+                   TOSHIBA MG08ACA16TA    350
+                           ST8000DM002    338
+                  HGST HUH721212ALE604    318
+                         ST12000NM0007    252
+                         ST16000NM001G    249
+                         ST14000NM001G    241
+                         ST12000NM001G    225
+                   TOSHIBA MG08ACA16TE    138
+                         ST14000NM0138    131
+                  TOSHIBA MG08ACA16TEY    115
+                   WDC WUH722222ALE6L4    104
+                   WDC WUH721816ALE6L4     95
+                         ST10000NM0086     77
+                    TOSHIBA MQ01ABF050     72
+                  HGST HMS5C4040BLE640     63
+                   WDC WUH721414ALE6L4     49
+                   TOSHIBA MQ01ABF050M     49
+                  HGST HMS5C4040ALE640     44
+                         ST500LM012 HN     42
+                   WDC WUH721816ALE6L0     37
+                         ST24000NM002H     35
+                  HGST HUH721212ALE600     31
+                   TOSHIBA MG10ACA20TE     31
+                  HGST HUH728080ALE600     26
+                  TOSHIBA MG07ACA14TEY     13
+                            ST500LM030     13
+    Seagate BarraCuda SSD ZA250CM10002     10
+               WD Blue SA510 2.5 250GB      9
+                        WDC WD5000LPVX      8
+Seagate BarraCuda 120 SSD ZA250CM10003      8
+                         ST14000NM0018      7
+                         ST18000NM000J      6
+                  HGST HUH728080ALE604      5
+                           Seagate SSD      5
+                           ST6000DX000      4
+                         ST14000NM000J      4
+                           ST4000DM005      3
+                         ST16000NM002J      3
+                         ST12000NM000J      2
+                       WDC WDS250G2B0A      2
+                       TOSHIBA HDWF180      2
+                         MTFDDAV240TCB      2
+                           ST8000DM004      1
+                         ST10000NM001G      1
+                         ST12000NM0117      1
+                        CT250MX500SSD1      1
+                           ST8000DM005      1
+                   TOSHIBA MD04ABA400V      1
+ Seagate FireCuda 120 SSD ZA500GM10001      1
+                        WDC WD5000LPCX      1
+                   TOSHIBA MG09ACA16TE      1
+Total count: 6399
